@@ -72,7 +72,7 @@ purrr::walk(1:length(pad_mt),
             })
 
 myMap <-
-  leaflet(options = leafletOptions(minZoom = 9, maxZoom = 15)) %>% 
+  leaflet(options = leafletOptions(minZoom = 9, maxZoom = 15), height = "100%") %>% 
   addFeatures(data = sf::st_transform(rmf, 4326), 
               layerId = "Rocky Mountain Front",
               color = "black",
@@ -115,10 +115,37 @@ purrr::walk(2:length(pad_mt),
                                   names(pad_mt)[[i]])
             })
 
-htmlwidgets::saveWidget(myMap, file = "docs/index.html",
-                        title = "Wild Montana — Roadless Areas",
-                        libdir = NULL,
-                        background = "white")
+# CSS for full-page layout + custom layer title
+style_block <- tags$style(HTML("
+  html, body, #map {
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+  }
+  .leaflet-container {
+    height: 100vh;
+    width: 100vw;
+  }
+  .leaflet-control-layers-list::before {
+    content: 'Rocky Mountain Front\\AInventoried Roadless Areas';
+    white-space: pre;
+    display: block;
+    font-weight: bold;
+    margin-bottom: 4px;
+    font-size: 14px;
+  }
+"))
 
-unlink("docs/index_files",
-       recursive = TRUE)
+html_page <- tagList(
+  tags$head(
+    tags$title("Wild Montana — Roadless Areas"),
+    style_block
+  ),
+  tags$body(
+    myMap
+  )
+)
+                
+
+htmltools::save_html(html_page, 
+                     file = "docs/index.html")
