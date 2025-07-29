@@ -115,4 +115,5 @@ purrr::walk(2:length(pad_mt),
                                   names(pad_mt)[[i]])
             })
 
-htmlwidgets::saveWidget(myMap, file = "docs/index.html")
+htmlwidgets::saveWidget(myMap, file = "docs/index.html",
+                        title = "Wild Montana — Roadless Areas")
