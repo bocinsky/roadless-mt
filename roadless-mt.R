@@ -89,8 +89,8 @@ purrr::walk(1:length(pad_mt),
                                     group = names(pad_mt)[[i]],
                                     color = myColors[[i]],
                                     popup = pad_mt[[i]]$Name,
-                                    weight = 1,
-                                    opacity = 1)
+                                    weight = 2,
+                                    opacity = 0.75)
             })
 
 myMap %<>%
